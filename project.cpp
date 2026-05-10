@@ -20,7 +20,7 @@ int jumlah = 0;
 
 // ================= BACA FILE =================
 void loadData() {
-    ifstream file("data.txt");
+    ifstream file("data.txt"); 
     if (!file) return;
 
     jumlah = 0;
