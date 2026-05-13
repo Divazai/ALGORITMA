@@ -25,7 +25,7 @@ void loadData() {
 
     jumlah = 0;
 
-    while (getline(file, barang[jumlah].nama)) {
+    while (jumlah < MAX && getline(file, barang[jumlah].nama)) {
         getline(file, barang[jumlah].kategori);
         file >> barang[jumlah].stok;
         file >> barang[jumlah].stokMin;
@@ -55,9 +55,9 @@ void saveData() {
 }
 
 // ================= CARI =================
-bool cariBarang(string nama, int &posisi) {
+bool cariBarang(string cari, int &posisi) {
     for (int i = 0; i < jumlah; i++) {
-        if (barang[i].nama == nama) {
+        if (barang[i].nama == cari) {
             posisi = i;
             return true;
         }
@@ -68,7 +68,7 @@ bool cariBarang(string nama, int &posisi) {
 // ================= TAMBAH =================
 void tambahBarang() {
     if (jumlah >= MAX) {
-        cout << "Data penuh\n";
+        cout << "Data penuh\n\n";
         return;
     }
 
@@ -77,9 +77,17 @@ void tambahBarang() {
 
     cout << "Nama: ";
     getline(cin, barang[jumlah].nama);
+    while(barang[jumlah].nama == "") {
+        cout << "Nama tidak boleh kosong\n";
+        getline(cin, barang[jumlah].nama);
+    }
 
     cout << "Kategori: ";
     getline(cin, barang[jumlah].kategori);
+    while(barang[jumlah].kategori == "") {
+        cout << "Kategori tidak boleh kosong\n";
+        getline(cin, barang[jumlah].kategori);
+    }
 
     cout << "Stok: ";
     cin >> barang[jumlah].stok;
@@ -90,11 +98,15 @@ void tambahBarang() {
     cin.ignore();
     cout << "Kadaluarsa: ";
     getline(cin, barang[jumlah].kadaluarsa);
+    while(barang[jumlah].kadaluarsa == "") {
+        cout << "Kadaluarsa tidak boleh kosong\n";
+        getline(cin, barang[jumlah].kadaluarsa);
+    }
 
     jumlah++;
     saveData();
 
-    cout << "Data ditambahkan\n";
+    cout << "Data ditambahkan\n\n\n";
 }
 
 // ================= TAMPIL =================
@@ -106,15 +118,15 @@ void tampilData() {
     cout << "+----+----------------------+------------+--------+--------+------------------+\n";
 
     for (int i = 0; i < jumlah; i++) {
-        cout << "| " << setw(2) << i + 1
-             << " | " << setw(20) << left << barang[i].nama
-             << " | " << setw(10) << left << barang[i].kategori
-             << " | " << setw(6) << right << barang[i].stok
-             << " | " << setw(6) << barang[i].stokMin
-             << " | " << setw(16) << left << barang[i].kadaluarsa << "|\n";
+        cout << "| " << right << setw(2) << i + 1
+             << " | " << left << setw(30) << barang[i].nama
+             << " | " << left << setw(10) << barang[i].kategori
+             << " | " << right << setw(6) << barang[i].stok
+             << " | " << right << setw(6) << barang[i].stokMin
+             << " | " << left << setw(16) << barang[i].kadaluarsa << " |\n";
     }
 
-    cout << "+----+----------------------+------------+--------+--------+------------------+\n";
+    cout << "+----+----------------------+------------+--------+--------+------------------+\n\n\n";
 }
 
 // ================= TAMBAH STOK =================
@@ -137,9 +149,9 @@ void tambahStok() {
         barang[posisi].stok += tambah;
         saveData();
 
-        cout << "Stok bertambah\n";
+        cout << "Stok bertambah\n\n\n";
     } else {
-        cout << "Barang tidak ada\n";
+        cout << "Barang tidak ditemukan\n\n\n";
     }
 }
 
@@ -164,33 +176,61 @@ void kurangiStok() {
             barang[posisi].stok -= kurang;
             saveData();
 
-            cout << "Stok berkurang\n";
+            cout << "Stok berkurang\n\n\n";
         } else {
-            cout << "Stok tidak cukup\n";
+            cout << "Stok tidak cukup\n\n\n";
         }
     } else {
-        cout << "Barang tidak ada\n";
+        cout << "Barang tidak ditemukan\n\n\n";
     }
 }
 
 // ================= CARI =================
 void cariData() {
-    string nama;
-    int posisi;
+    string cariNama;
+    bool ditemukan  = false;
 
     cin.ignore();
     cout << "Cari Barang\n";
     cout << "Nama: ";
+    getline(cin, cariNama);
+
+    for (int i = 0; i < jumlah; i++) {
+        if (barang[i].nama.find(cariNama) != string::npos) {
+            cout << "Ditemukan\n";
+            cout << "Nama      : " << barang[i].nama << endl;
+            cout << "Kategori  : " << barang[i].kategori << endl;
+            cout << "Stok      : " << barang[i].stok << endl;
+            cout << "Kadaluarsa: " << barang[i].kadaluarsa << endl;
+            cout << "\n\n\n";
+            ditemukan = true;
+        }
+    }
+    if (!ditemukan) {
+        cout << "Barang tidak ditemukan\n\n\n";
+    }
+}
+
+// ================= HAPUS BARANG =================
+void hapusBarang() {
+    string nama;
+    int posisi;
+
+    cin.ignore();
+    cout << "Hapus Barang\n";
+    cout << "Nama barang: ";
     getline(cin, nama);
 
     if (cariBarang(nama, posisi)) {
-        cout << "Ditemukan\n";
-        cout << "Nama: " << barang[posisi].nama << endl;
-        cout << "Kategori: " << barang[posisi].kategori << endl;
-        cout << "Stok: " << barang[posisi].stok << endl;
-        cout << "Kadaluarsa: " << barang[posisi].kadaluarsa << endl;
+        for (int i = posisi; i < jumlah - 1; i++) {
+            barang[i] = barang[i + 1];
+        }
+        jumlah--;
+        saveData();
+
+        cout << "Data berhasil dihapus\n\n\n";
     } else {
-        cout << "Barang tidak ditemukan\n";
+        cout << "Barang tidak ditemukan\n\n\n";
     }
 }
 
@@ -201,13 +241,14 @@ int main() {
     loadData();
 
     do {
-        cout << "MENU\n";
+        cout << "=======MENU=======\n";
         cout << "1. Tambah barang\n";
         cout << "2. Lihat data\n";
         cout << "3. Tambah stok\n";
         cout << "4. Kurangi stok\n";
         cout << "5. Cari barang\n";
-        cout << "6. Keluar\n";
+        cout << "6. Hapus barang\n";
+        cout << "7. Keluar\n";
         cout << "Pilih: ";
         cin >> pilih;
 
@@ -217,11 +258,12 @@ int main() {
             case 3: tambahStok(); break;
             case 4: kurangiStok(); break;
             case 5: cariData(); break;
-            case 6: cout << "Selesai\n"; break;
-            default: cout << "Pilihan salah\n";
+            case 6: hapusBarang(); break;
+            case 7: cout << "Selesai\n\n\n"; break;
+            default: cout << "Pilihan salah\n\n\n";
         }
 
-    } while (pilih != 6);
+    } while (pilih != 7);
 
     return 0;
 }
