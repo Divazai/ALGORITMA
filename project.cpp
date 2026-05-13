@@ -253,12 +253,12 @@ int main() {
         cin >> pilih;
 
         switch (pilih) {
-            case 1: tambahBarang(); break;
-            case 2: tampilData(); break;
-            case 3: tambahStok(); break;
-            case 4: kurangiStok(); break;
-            case 5: cariData(); break;
-            case 6: hapusBarang(); break;
+            case 1: cout << "\n"; tambahBarang(); break;
+            case 2: cout << "\n"; tampilData(); break;
+            case 3: cout << "\n"; tambahStok(); break;
+            case 4: cout << "\n"; kurangiStok(); break;
+            case 5: cout << "\n"; cariData(); break;
+            case 6: cout << "\n"; hapusBarang(); break;
             case 7: cout << "Selesai\n\n\n"; break;
             default: cout << "Pilihan salah\n\n\n";
         }
