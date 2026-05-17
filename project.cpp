@@ -9,6 +9,7 @@ const int MAX = 100;
 // Struktur data
 struct Barang
 {
+struct Barang {
     string nama;
     string kategori;
     int stok;
@@ -30,6 +31,13 @@ void loadData()
 
     while (jumlah < MAX && getline(file, barang[jumlah].nama))
     {
+void loadData() {
+    ifstream file("data.txt"); 
+    if (!file) return;
+
+    jumlah = 0;
+
+    while (jumlah < MAX && getline(file, barang[jumlah].nama)) {
         getline(file, barang[jumlah].kategori);
         file >> barang[jumlah].stok;
         file >> barang[jumlah].stokMin;
@@ -45,6 +53,7 @@ void loadData()
 // ================= SIMPAN FILE =================
 void saveData()
 {
+void saveData() {
     ofstream file("data.txt");
 
     for (int i = 0; i < jumlah; i++)
@@ -67,6 +76,9 @@ bool cariBarang(string cari, int &posisi)
     {
         if (barang[i].nama == cari)
         {
+bool cariBarang(string cari, int &posisi) {
+    for (int i = 0; i < jumlah; i++) {
+        if (barang[i].nama == cari) {
             posisi = i;
             return true;
         }
@@ -79,6 +91,8 @@ void tambahBarang()
 {
     if (jumlah >= MAX)
     {
+void tambahBarang() {
+    if (jumlah >= MAX) {
         cout << "Data penuh\n\n";
         return;
     }
@@ -90,6 +104,7 @@ void tambahBarang()
     getline(cin, barang[jumlah].nama);
     while (barang[jumlah].nama == "")
     {
+    while(barang[jumlah].nama == "") {
         cout << "Nama tidak boleh kosong\n";
         getline(cin, barang[jumlah].nama);
     }
@@ -98,6 +113,7 @@ void tambahBarang()
     getline(cin, barang[jumlah].kategori);
     while (barang[jumlah].kategori == "")
     {
+    while(barang[jumlah].kategori == "") {
         cout << "Kategori tidak boleh kosong\n";
         getline(cin, barang[jumlah].kategori);
     }
@@ -113,6 +129,7 @@ void tambahBarang()
     getline(cin, barang[jumlah].kadaluarsa);
     while (barang[jumlah].kadaluarsa == "")
     {
+    while(barang[jumlah].kadaluarsa == "") {
         cout << "Kadaluarsa tidak boleh kosong\n";
         getline(cin, barang[jumlah].kadaluarsa);
     }
@@ -126,6 +143,7 @@ void tambahBarang()
 // ================= TAMPIL DATA =================
 void tampilData()
 {
+void tampilData() {
     cout << "DATA BARANG\n";
 
     cout << "+----+----------------------+------------+--------+--------+------------------+\n";
@@ -134,6 +152,7 @@ void tampilData()
 
     for (int i = 0; i < jumlah; i++)
     {
+    for (int i = 0; i < jumlah; i++) {
         cout << "| " << right << setw(2) << i + 1
              << " | " << left << setw(30) << barang[i].nama
              << " | " << left << setw(10) << barang[i].kategori
@@ -148,6 +167,7 @@ void tampilData()
 // ================= TAMBAH STOK =================
 void tambahStok()
 {
+void tambahStok() {
     string nama;
     int tambah;
     int posisi;
@@ -178,6 +198,7 @@ void tambahStok()
 // ================= KURANGI STOK =================
 void kurangiStok()
 {
+void kurangiStok() {
     string nama;
     int kurang;
     int posisi;
@@ -208,6 +229,10 @@ void kurangiStok()
     }
     else
     {
+        } else {
+            cout << "Stok tidak cukup\n\n\n";
+        }
+    } else {
         cout << "Barang tidak ditemukan\n\n\n";
     }
 }
@@ -217,6 +242,9 @@ void cariData()
 {
     string cariNama;
     bool ditemukan = false;
+void cariData() {
+    string cariNama;
+    bool ditemukan  = false;
 
     cin.ignore();
     cout << "Cari Barang\n";
@@ -227,6 +255,8 @@ void cariData()
     {
         if (barang[i].nama.find(cariNama) != string::npos)
         {
+    for (int i = 0; i < jumlah; i++) {
+        if (barang[i].nama.find(cariNama) != string::npos) {
             cout << "Ditemukan\n";
             cout << "Nama      : " << barang[i].nama << endl;
             cout << "Kategori  : " << barang[i].kategori << endl;
@@ -238,6 +268,7 @@ void cariData()
     }
     if (!ditemukan)
     {
+    if (!ditemukan) {
         cout << "Barang tidak ditemukan\n\n\n";
     }
 }
@@ -245,6 +276,7 @@ void cariData()
 // ================= HAPUS BARANG =================
 void hapusBarang()
 {
+void hapusBarang() {
     string nama;
     int posisi;
 
@@ -257,6 +289,8 @@ void hapusBarang()
     {
         for (int i = posisi; i < jumlah - 1; i++)
         {
+    if (cariBarang(nama, posisi)) {
+        for (int i = posisi; i < jumlah - 1; i++) {
             barang[i] = barang[i + 1];
         }
         jumlah--;
@@ -266,6 +300,7 @@ void hapusBarang()
     }
     else
     {
+    } else {
         cout << "Barang tidak ditemukan\n\n\n";
     }
 }
@@ -273,12 +308,14 @@ void hapusBarang()
 // ================= MAIN =================
 int main()
 {
+int main() {
     int pilih;
 
     loadData();
 
     do
     {
+    do {
         cout << "=======MENU=======\n";
         cout << "1. Tambah barang\n";
         cout << "2. Lihat data\n";
@@ -321,6 +358,15 @@ int main()
             break;
         default:
             cout << "Pilihan salah\n\n\n";
+        switch (pilih) {
+            case 1: cout << "\n"; tambahBarang(); break;
+            case 2: cout << "\n"; tampilData(); break;
+            case 3: cout << "\n"; tambahStok(); break;
+            case 4: cout << "\n"; kurangiStok(); break;
+            case 5: cout << "\n"; cariData(); break;
+            case 6: cout << "\n"; hapusBarang(); break;
+            case 7: cout << "Selesai\n\n\n"; break;
+            default: cout << "Pilihan salah\n\n\n";
         }
 
     } while (pilih != 7);
