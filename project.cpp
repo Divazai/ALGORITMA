@@ -263,7 +263,7 @@ void cekStokKritis() {
     
     for (int i = 0; i < jumlah; i++) {
         if (barang[i].stok <= barang[i].stokMin) {
-            cout << "[RE-ORDER] " << barang[i].nama 
+            cout << barang[i].nama 
                  << " -> Stok Sekarang: " << barang[i].stok 
                  << " (Batas Minimum: " << barang[i].stokMin << ")\n";
             ada = true;
@@ -271,7 +271,7 @@ void cekStokKritis() {
     }
     
     if (!ada) {
-        cout << "Aman! Semua barang memiliki jumlah stok yang mencukupi.\n";
+        cout << "Sudah aman! Semua barang memiliki jumlah stok yang mencukupi.\n";
     }
     cout << "\n";
 }
